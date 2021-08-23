@@ -1,0 +1,17 @@
+{
+  "/backend-graphql-api-service": {
+    "target": "http://backend-graphql-api-service:8000/graphql",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/nestjs-postgraphile": {
+    "target": "http://nestjs-postgraphile:5000/graphql",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/backend-bulljs": {
+    "target": "http://backend-bulljs:4001/graphql",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

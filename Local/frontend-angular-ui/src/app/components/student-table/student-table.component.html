@@ -1,0 +1,163 @@
+<h1
+  style="
+    font-size: 2rem;
+    font-weight: 800;
+    background-color: #ff6358;
+    padding: 1.5rem;
+    color: white;
+  "
+>
+  STUDENT MANAGEMENT
+</h1>
+
+<kendo-grid
+  [data]="items"
+  [pageSize]="pageSize"
+  [skip]="skip"
+  [pageable]="true"
+  [resizable]="true"
+  [data]="gridView"
+  (pageChange)="pageChange($event)"
+  [height]="450"
+  (edit)="editHandler1($event)"
+  (save)="saveHandler($event)"
+  [sortable]="true"
+  [kendoGridBinding]="items"
+  [kendoGridReactiveEditing]="createFormGroup"
+  [removeConfirmation]="removeConfirmation"
+>
+  <ng-template kendoGridToolbarTemplate>
+    <kendo-grid-spacer></kendo-grid-spacer>
+    <button
+      kendoButton
+      (click)="clearForm()"
+      *ngIf="!opened"
+      (click)="open()"
+      icon="Add"
+    >
+      <span class="k-icon k-i-plus"></span>
+      Add Student
+    </button>
+    <kendo-upload
+      kendoButton
+      kendoGridExcelCommand
+      type="button"
+      icon="file-excel"
+      [autoUpload]="false"
+      (upload)="onUpload($event)"
+      >Export to PDF</kendo-upload
+    >
+  </ng-template>
+  <kendo-grid-column field="name" title="Name" editor="text">
+  </kendo-grid-column>
+  <kendo-grid-column field="email" title="Email" editor="text">
+  </kendo-grid-column>
+  <kendo-grid-column
+    field="dateofbirth"
+    format="yyyy/MM/dd"
+    title="Date Of Birth"
+    editor="date"
+  >
+    <ng-template kendoGridCellTemplate let-dataItem>
+      {{ dataItem.dateofbirth | date }}
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="age" title="Age"> </kendo-grid-column>
+  <kendo-grid-command-column title="Actions">
+    <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
+      <button kendoGridEditCommand class="k-button update">
+        <span class="k-icon k-i-edit"></span>Edit
+      </button>
+      <button kendoButton kendoGridSaveCommand [primary]="true">
+        <span class="k-icon k-i-save"></span>Save
+      </button>
+      <button kendoGridCancelCommand>
+        <span class="k-icon k-i-cancel-circle"></span>cancel
+      </button>
+      <button class="k-button delete" kendoGridRemoveCommand>
+        <span class="k-icon k-i-delete"></span>Delete
+      </button>
+    </ng-template>
+  </kendo-grid-command-column>
+</kendo-grid>
+
+<!-- Add Student Form -->
+<kendo-dialog
+  title="Please confirm"
+  *ngIf="opened"
+  (close)="close()"
+  [minWidth]="250"
+  [width]="450"
+  class="k-dialog-p"
+>
+  <form class="k-form" [formGroup]="form">
+    <kendo-formfield showErrors="initial">
+      <kendo-label [for]="name" text="Name"></kendo-label>
+      <kendo-textbox
+        formControlName="name"
+        placeholder="Name"
+        [clearButton]="true"
+        #name
+        required
+      ></kendo-textbox>
+      <kendo-formerror>Error:Name is required</kendo-formerror>
+    </kendo-formfield>
+    <kendo-formfield showErrors="initial">
+      <kendo-label [for]="email" text="Email"></kendo-label>
+      <kendo-textbox
+        formControlName="email"
+        [clearButton]="true"
+        placeholder="example@gmail.com"
+        #email
+        required
+      ></kendo-textbox>
+      <kendo-formerror>Error: email is required</kendo-formerror>
+    </kendo-formfield>
+    <kendo-formfield showErrors="initial">
+      <kendo-label [for]="dateofbirth" text="DOB"></kendo-label>
+      <kendo-datepicker
+        formControlName="dateofbirth"
+        format="yyyy MMMM dd"
+        placeholder="YYYY-MM-DD"
+        #dateofbirth
+        required
+      ></kendo-datepicker>
+
+      <kendo-formerror>Error: Date Of Birth is required</kendo-formerror>
+    </kendo-formfield>
+    <kendo-dialog-actions class="k-form-buttons">
+      <button kendoButton k-button (click)="clearForm()">Clear</button>
+      <button
+        kendoButton
+        k-button
+        (click)="submitForm()"
+        (click)="clearForm()"
+        [primary]="true"
+        class="submitButton"
+      >
+        Submit
+      </button>
+    </kendo-dialog-actions>
+  </form>
+</kendo-dialog>
+
+<!-- Confirmation Dialog -->
+<kendo-dialog
+  title="Please confirm"
+  *ngIf="itemToRemove"
+  (close)="confirmRemove(false)"
+>
+  <p style="margin: 30px; text-align: center">
+    Are you sure you want to delete {{ itemToRemove.name }}?
+  </p>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="confirmRemove(false)">No</button>
+    <button
+      class="k-button k-primary"
+      (click)="confirmRemove(true)"
+      primary="true"
+    >
+      Yes
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
