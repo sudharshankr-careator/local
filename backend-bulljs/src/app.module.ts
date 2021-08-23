@@ -15,11 +15,7 @@ import { GraphQLWithUploadModule } from './graphql-uploa-middleware';
     ExcelUploadModule,
     BullModule.forRoot({
       redis: {
-<<<<<<< HEAD
         host: 'localhost',
-=======
-        host: 'redis',
->>>>>>> 655bc73e5984aee25ffff16d8e5049b7356ec4a4
         port: 6379,
       },
     }),

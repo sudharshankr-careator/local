@@ -14,12 +14,7 @@ import { BullModule } from '@nestjs/bull';
     }),
     ConfigModule.forRoot({ isGlobal: true }),
 
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      url: process.env.DATABASE_URL,
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
+    TypeOrmModule.forRoot({}),
     BullModule.forRoot({
       redis: {
         host: 'redis',
