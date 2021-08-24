@@ -1,4 +1,5 @@
 import {
+  OnGlobalQueueFailed,
   OnQueueCompleted,
   OnQueueFailed,
   Process,
@@ -10,7 +11,7 @@ import { StudentD } from "src/Student";
 import { Repository } from "typeorm";
 import { Student } from "./entities/student.entity";
 import * as SC from "socketcluster-client";
-import { Logger } from "@nestjs/common";
+import { HttpException, Logger } from "@nestjs/common";
 
 let socket = SC.create({
   hostname: "localhost",
@@ -24,24 +25,10 @@ export class StudentConsumer {
   ) {}
   @Process("create")
   async createStudent(job: Job<[StudentD]>) {
-    let d1 = [];
-    job.data.map((val) => {
-      const data = this.studentRepository.save(val);
-      return data
-        .then((val) => console.log(val))
-        .catch((e) => {
-          d1.push("error");
-        });
+    const data = this.studentRepository.save(job.data);
+    return data.catch(() => {
+      throw new HttpException({ message: "User already exists" }, 400);
     });
-    if (d1.length <= 1) {
-      (async () => {
-        try {
-          await socket.invokePublish("studentE", `Failed job with error`);
-        } catch (error) {
-          Logger.log(error);
-        }
-      })();
-    }
   }
   @OnQueueCompleted()
   completed(job: Job, result: any) {

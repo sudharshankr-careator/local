@@ -17,7 +17,6 @@ export class ExcelUploadService {
         var month = parseInt(res.dateofbirth.substring(5, 7));
         var day = parseInt(res.dateofbirth.substring(8, 10));
         let today = new Date();
-        //let dateof = new Date(job.data.dateofbirth).toISOString();
         var d = today.getFullYear();
         let age: number = d - year;
         if (
@@ -36,14 +35,7 @@ export class ExcelUploadService {
       });
     }
     console.log('_______', data);
-    this.queue.add('create', data);
-    // data.map((value) => {
-    //   this.queue.add('create', {
-    //     name: value.name,
-    //     email: value.email,
-    //     dateofbirth: value.dateofbirth,
-    //   });
-    // });
+     this.queue.add('create', data, { attempts: 2, backoff: 1000 });
   }
 
   findAll() {

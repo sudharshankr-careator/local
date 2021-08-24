@@ -1,5 +1,5 @@
 import { Employee, employees } from './employees';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-extra',
@@ -7,15 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./extra.component.css'],
 })
 export class ExtraComponent {
-  se: string = '';
-  multiselect: string = '';
-  gridData1: string = '';
-  drop: string = '';
-  d1: string = '';
-  d2: string = '';
+  AutoComplete: string = '';
+  ComboBox: string = '';
+  DropDownList: string = '';
+  MultiSelect: any= '';
   constructor() {}
 
   ngOnInit(): void {}
+
   public listItems: Array<string> = [
     'Baseball',
     'Basketball',
@@ -29,35 +28,9 @@ export class ExtraComponent {
 
   public gridData: Employee[] = employees;
 
-  public treeItems: any[] = [
-    {
-      text: 'Furniture',
-      id: 1,
-      items: [
-        { text: 'Tables & Chairs', id: 2 },
-        { text: 'Sofas', id: 3 },
-        { text: 'Occasional Furniture', id: 4 },
-      ],
-    },
-    {
-      text: 'Decor',
-      id: 5,
-      items: [
-        { text: 'Bed Linen', id: 6 },
-        { text: 'Carpets', id: 7 },
-      ],
-    },
-  ];
 
   public value = ['Basketball', 'Cricket'];
   public complexValue = { text: 'Decor', id: 5 };
   public complexArrayValue = [{ text: 'Sofas', id: 3 }];
 
-  public toggleText = 'Hide';
-  private show = true;
-
-  public onToggle(): void {
-    this.show = !this.show;
-    this.toggleText = this.show ? 'Hidе' : 'Show';
-  }
 }

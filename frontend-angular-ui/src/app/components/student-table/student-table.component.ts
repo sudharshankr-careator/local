@@ -191,7 +191,6 @@ export class StudentTableComponent implements OnInit {
   // remove confirmation dialog
   public confirmRemove(shouldRemove: boolean): void {
     this.removeConfirmationSubject.next(shouldRemove);
-    console.log(this.itemToRemove.id);
     this.apollo
       .mutate({
         mutation: DELETE,
@@ -311,25 +310,11 @@ export class StudentTableComponent implements OnInit {
       .subscribe((data: any) => {
         this.items = data.data.updateStudentById.query.allStudents.nodes;
       });
-    // .subscribe()
     data.sender.closeRow(data.rowIndex);
   }
   async fetchData() {
-    const query = await this.apollo.watchQuery<any>({
-      query: gql`
-        query MyQuery {
-          allStudents {
-            nodes {
-              age
-              dateofbirth
-              email
-              id
-              name
-              nodeId
-            }
-          }
-        }
-      `,
+    const query = this.apollo.watchQuery<any>({
+      query: GET_STUDENTS,
       fetchPolicy: 'network-only',
     });
 
@@ -348,55 +333,42 @@ export class StudentTableComponent implements OnInit {
       .then((data) => console.log(data))
       .catch((e) => console.log(e));
     (async () => {
-      let channel = socket.subscribe('jobComplete');
-      console.log(channel, '++++++++');
+      let channel: any = socket.subscribe('jobComplete');
+      console.log(channel, 'complpted');
       for await (let data of channel) {
         if (data) {
           console.log(data);
 
           this.notificationService.show({
-            content: `Uploaded entry`,
+            content: `uploaded Successfully`,
             hideAfter: 3000,
-            position: { horizontal: 'right', vertical: 'bottom' },
+            position: { horizontal: 'center', vertical: 'top' },
             animation: { type: 'fade', duration: 900 },
             type: { style: 'success', icon: true },
           });
           await this.fetchData();
+          channel = socket.killChannel('jobComplete');
         }
       }
-      await socket.unsubscribe('jobComplete');
+
+      console.log(channel, 'Trying');
     })();
     (async () => {
-      let channel = socket.subscribe('jobFailed');
+      let channel: any = socket.subscribe('jobFailed');
       for await (let data of channel) {
         if (data) {
           this.notificationService.show({
-            content: `Uploaded Rejected`,
-            hideAfter: 3000,
-            position: { horizontal: 'right', vertical: 'bottom' },
-            animation: { type: 'fade', duration: 900 },
-            type: { style: 'error', icon: true },
-          });
-        }
-      }
-      await socket.unsubscribe('jobFailed');
-    })();
-    (async () => {
-      let channel = socket.subscribe('studentE');
-      for await (let data of channel) {
-        if (data) {
-          this.notificationService.show({
-            content: `DataBase errro`,
+            content: `Failed to Upload`,
             hideAfter: 3000,
             position: { horizontal: 'center', vertical: 'top' },
             animation: { type: 'fade', duration: 900 },
-            type: { style: 'info', icon: true },
+            type: { style: 'error', icon: true },
           });
+          await this.fetchData();
+          channel = socket.killChannel('jobFailed');
         }
       }
-      await socket.unsubscribe('studentE');
+      console.log(channel, 'fail');
     })();
-
-
   }
 }

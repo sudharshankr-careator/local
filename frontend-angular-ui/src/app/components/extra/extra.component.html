@@ -26,86 +26,53 @@
     <div class="col-xs-12 col-sm-6 example-col">
       <p>AutoComplete</p>
       <kendo-autocomplete
+        [(ngModel)]="AutoComplete"
         [data]="listItems"
         [placeholder]="'Your favorite sport'"
       >
       </kendo-autocomplete>
+      <p>
+        You Selected :<span style="color:rgb(100, 177, 207); background-Color: white; ">{{ AutoComplete }}</span>
+      </p>
     </div>
 
     <div class="col-xs-12 col-sm-6 example-col">
       <p>ComboBox</p>
-      <kendo-combobox [data]="listItems" [value]="'Basketball'">
+      <kendo-combobox
+        [(ngModel)]="ComboBox"
+        [data]="listItems"
+        [value]="'Basketball'"
+      >
       </kendo-combobox>
+      <p>
+        You Selected :<span style="color:rgb(100, 177, 207); background-Color: white; ">{{ ComboBox }}</span>
+      </p>
     </div>
 
     <div class="col-xs-12 col-sm-6 example-col">
       <p>DropDownList</p>
-      <kendo-dropdownlist [data]="listItems" [value]="'Basketball'">
-      </kendo-dropdownlist>
-    </div>
-
-    <div class="col-xs-12 col-sm-6 example-col">
-      <p>DropDownTree</p>
-      <kendo-dropdowntree
-        kendoDropDownTreeExpandable
-        [kendoDropDownTreeHierarchyBinding]="treeItems"
-        textField="text"
-        valueField="id"
-        childrenField="items"
-        [value]="complexValue"
-        [popupSettings]="{
-          width: '230px'
-        }"
-        [expandedKeys]="['1']"
-      ></kendo-dropdowntree>
-    </div>
-
-    <div class="col-xs-12 col-sm-6 example-col">
-      <p>MultiColumnComboBox</p>
-      <kendo-multicolumncombobox
-        [data]="gridData"
-        [textField]="'name'"
-        [valueField]="'id'"
-        [placeholder]="'Select an employee'"
+      <kendo-dropdownlist
+        [(ngModel)]="DropDownList"
+        [data]="listItems"
+        [value]="'Basketball'"
       >
-        <kendo-combobox-column [field]="'name'" [title]="'Name'" [width]="200">
-        </kendo-combobox-column>
-        <kendo-combobox-column
-          [field]="'title'"
-          [title]="'Title'"
-          [width]="200"
-        >
-        </kendo-combobox-column>
-        <kendo-combobox-column
-          [field]="'phone'"
-          [title]="'Phone'"
-          [width]="200"
-        >
-        </kendo-combobox-column>
-      </kendo-multicolumncombobox>
+      </kendo-dropdownlist>
+      <p>
+        You Selected :<span style="color:rgb(100, 177, 207); background-Color: white; ">{{ DropDownList }}</span>
+      </p>
     </div>
 
     <div class="col-xs-12 col-sm-6 example-col">
       <p>MultiSelect</p>
       <kendo-multiselect
+        [(ngModel)]="MultiSelect"
         [data]="listItems"
         [value]="value"
         [placeholder]="'Your favorite sports'"
       ></kendo-multiselect>
-    </div>
-
-    <div class="col-xs-12 col-sm-6 example-col">
-      <p>MultiSelectTree</p>
-      <kendo-multiselecttree
-        kendoMultiSelectTreeExpandable
-        [kendoMultiSelectTreeHierarchyBinding]="treeItems"
-        [textField]="'text'"
-        [valueField]="'id'"
-        [childrenField]="'items'"
-        [expandedKeys]="['0']"
-        [(value)]="complexArrayValue"
-      >
-      </kendo-multiselecttree>
+      <p>
+        You Selected :<span style="color:rgb(100, 177, 207); background-Color: white; ">{{ MultiSelect }}</span>
+      </p>
     </div>
   </div>
   <br />
